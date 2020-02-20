@@ -1,0 +1,16 @@
+ophcrack -g -d -t ./rainbow/xp-special -f ntlm.hashes
+
+cat ./wordlist/rockyou | ./filter-alphanum.py | ./filter-keywords.py keywords/countries > wordlist/countries
+
+./web-scrape.py "https://en.wikipedia.org/wiki/List_of_Law_%26_Order:_Special_Victims_Unit_episodes" | ./string-gen.py "\0\d\d" - | hashcat -m 0 ./law.hashes
+
+hashcat -m 0 md5.hashes wordlist/rockyou
+
+hashcat -m 0 md5.hashes -a 3
+
+hashcat -m 0 ../ncl-dump/md5.hashes -a 3 NCL-?u?u?u?u-?d?d?d?d
+
+hashcat -m 500 cracking5.hashes wordlist/countries -r OneRuleToRuleThemAll.rule.txt
+hashcat -m 500 cracking5.hashes wordlist/countries -r /usr/share/hashcat/rules/best64.rule
+hashcat -m 500 cracking5.hashes wordlist/countries -r /usr/share/hashcat/rules/rockyou-30000.rule
+hashcat -m 500 cracking5.hashes wordlist/countries -r /usr/share/hashcat/rules/unix-ninja-leetspeak.rule
